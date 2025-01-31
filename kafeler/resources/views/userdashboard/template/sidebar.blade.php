@@ -7,7 +7,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{route('dashboard.banners.index')}}">
                     <i class="bi bi-images me-2"></i> Kafe Slider
                 </a>
             </li>
@@ -17,7 +17,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{route('dashboard.products.index')}}">
                     <i class="bi bi-box-seam me-2"></i> Ürünler
                 </a>
             </li>

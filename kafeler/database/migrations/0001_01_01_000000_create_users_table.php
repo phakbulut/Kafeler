@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('cafe_name'); 
             $table->string('avatar')->nullable(); 
             $table->string('email')->unique();
+            $table->string('slug')->nullable();
             $table->boolean('status')->default(false);
             $table->string('password');
             $table->timestamps();
@@ -46,7 +47,7 @@ return new class extends Migration
             'avatar'=>'bayramakmese.webp',
             'status'=>'0',
             'email' => 'bayramakmese@cafeler.test', 
-            'password' => Hash::make('cafeler.2025'), 
+            'password' => Hash::make('eterna.2025'), 
         ]);
     }
 

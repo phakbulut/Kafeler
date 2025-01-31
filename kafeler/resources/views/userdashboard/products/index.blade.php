@@ -47,7 +47,6 @@
         transform: translateX(26px);
     }
 
-    /* Yeni Eklenen Checkbox Stilleri */
     .bulk-checkbox {
         width: 1.2em;
         height: 1.2em;
@@ -66,15 +65,15 @@
 
 @section('content')
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">Kategoriler</h1>
+    <h1 class="h2">Ürünler</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
-        <a href="{{ route('dashboard.categories.create') }}" class="btn btn-sm btn-primary">
-            <i class="bi bi-plus-circle"></i> Kategori Ekle
+        <a href="{{ route('dashboard.products.create') }}" class="btn btn-sm btn-primary">
+            <i class="bi bi-plus-circle"></i> Ürün Ekle
         </a>
     </div>
 </div>
 
-<form id="bulkDeleteForm" method="POST" action="{{ route('dashboard.categories.bulkDelete') }}">
+<form id="bulkDeleteForm" method="POST" action="{{ route('dashboard.products.bulkDelete') }}">
     @csrf
     <table class="table table-bordered">
         <thead>
@@ -82,53 +81,106 @@
                 <th>
                     <input type="checkbox" id="selectAll" class="bulk-checkbox">
                 </th>
-                <th>Kategori Id</th>
-                <th>Kategori Adı</th>
-                <th>Status</th>
-                <th>Resim</th>
+                <th>id</th>
+                <th>Ürün Adı</th>
+                <th>Kategori</th>
+                <th>Fiyat</th>
+                <th>Durum</th>
+                <th>Ana Resim</th>
                 <th>İşlemler</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($categories as $category)
+            @foreach ($products as $product)
                 <tr>
                     <td>
                         <input type="checkbox" 
                                name="ids[]" 
-                               value="{{ $category->id }}" 
+                               value="{{ $product->id }}" 
                                class="bulk-checkbox">
                     </td>
                     <td>{{ $loop->iteration }}</td>
-                    <td>{{ $category->name }}</td>
+                    <td>{{ $product->name }}</td>
+                    <td>{{ $product->category->name }}</td>
+                    <td>{{ $product->price }} ₺</td>
                     <td>
                         <label class="switch">
                             <input type="checkbox" 
-                                   data-id="{{ $category->id }}"
-                                   {{ $category->status ? 'checked' : '' }}>
+                                   data-id="{{ $product->id }}"
+                                   {{ $product->status ? 'checked' : '' }}>
                             <span class="slider round"></span>
                         </label>
                     </td>
                     <td>
-                        @if ($category->image)
-                            <img src="{{ asset('storage/category_images/' . $category->image) }}"
-                                alt="{{ $category->name }}" 
-                                style="width: 50px; height: 50px; object-fit: cover;">
+                        @if ($product->main_image)
+                            <img src="{{ asset('storage/product_main_images/' . $product->main_image) }}"
+                                alt="{{ $product->name }}" 
+                                width="50" 
+                                style="object-fit: cover; cursor: pointer;"
+                                data-bs-toggle="modal"
+                                data-bs-target="#imageModal{{ $product->id }}">
                         @else
                             Resim Yok
                         @endif
                     </td>
                     <td>
-                        <a href="{{ route('dashboard.categories.edit', $category->id) }}"
-                            class="btn btn-sm btn-warning">
+                        <a href="{{ route('dashboard.products.edit', $product->id) }}" class="btn btn-sm btn-warning">
                             <i class="bi bi-pencil"></i>
                         </a>
-                        <button type="button" 
-                                class="btn btn-sm btn-danger delete-btn" 
-                                data-id="{{ $category->id }}">
+                        <button type="button" class="btn btn-sm btn-danger delete-btn" data-id="{{ $product->id }}">
                             <i class="bi bi-trash"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal"
+                            data-bs-target="#sliderModal{{ $product->id }}">
+                            <i class="bi bi-images"></i>
                         </button>
                     </td>
                 </tr>
+
+                <!-- Image Modal -->
+                <div class="modal fade" id="imageModal{{ $product->id }}" tabindex="-1"
+                    aria-labelledby="imageModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="imageModalLabel">{{ $product->name }}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <img src="{{ asset('storage/product_main_images/' . $product->main_image) }}"
+                                    alt="{{ $product->name }}" class="img-fluid">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slider Modal -->
+                <div class="modal fade" id="sliderModal{{ $product->id }}" tabindex="-1" aria-labelledby="sliderModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="sliderModalLabel">{{ $product->name }} - Slider Resimleri</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="swiper mySwiper{{ $product->id }}">
+                                    <div class="swiper-wrapper">
+                                        @foreach ($product->images as $image)
+                                            <div class="swiper-slide">
+                                                <img src="{{ asset('storage/product_slider_images/' . $image->image) }}" 
+                                                     alt="{{ $product->name }}" 
+                                                     class="img-fluid"
+                                                     style="max-height: 70vh; object-fit: contain;">
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                    <div class="swiper-pagination"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             @endforeach
         </tbody>
     </table>
@@ -137,16 +189,18 @@
 @endsection
 
 @section('scripts')
+<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
 <script>
     // Route URL'leri
-    const toggleStatusUrl = "{{ route('dashboard.categories.toggleStatus', ['category' => ':id']) }}";
-    const deleteUrl = "{{ route('dashboard.categories.destroy', ['category' => ':id']) }}";
+    const toggleStatusUrl = "{{ route('dashboard.products.toggleStatus', ['product' => ':id']) }}";
+    const deleteUrl = "{{ route('dashboard.products.destroy', ['product' => ':id']) }}";
 
     // Status Toggle
     document.querySelectorAll('.switch input').forEach(checkbox => {
         checkbox.addEventListener('change', function() {
-            const categoryId = this.dataset.id;
-            const url = toggleStatusUrl.replace(':id', categoryId);
+            const productId = this.dataset.id;
+            const url = toggleStatusUrl.replace(':id', productId);
 
             fetch(url, {
                 method: 'POST',
@@ -188,8 +242,8 @@
     // Tekli Silme
     document.querySelectorAll('.delete-btn').forEach(button => {
         button.addEventListener('click', function() {
-            const categoryId = this.dataset.id;
-            const url = deleteUrl.replace(':id', categoryId);
+            const productId = this.dataset.id;
+            const url = deleteUrl.replace(':id', productId);
 
             Swal.fire({
                 title: 'Emin misiniz?',
@@ -242,14 +296,14 @@
             Swal.fire({
                 icon: 'warning',
                 title: 'Uyarı!',
-                text: 'Lütfen silmek istediğiniz kategorileri seçiniz!'
+                text: 'Lütfen silmek istediğiniz ürünleri seçiniz!'
             });
             return;
         }
 
         Swal.fire({
             title: 'Emin misiniz?',
-            text: `Seçilen ${selectedIds.length} kategori kalıcı olarak silinecek!`,
+            text: `Seçilen ${selectedIds.length} ürün kalıcı olarak silinecek!`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -285,6 +339,25 @@
                     });
                 });
             }
+        });
+    });
+
+    // Swiper Initialization for Modals
+    document.querySelectorAll('[data-bs-target^="#sliderModal"]').forEach(button => {
+        button.addEventListener('click', function() {
+            const modalId = this.getAttribute('data-bs-target');
+            const productId = modalId.replace('#sliderModal', '');
+            
+            new Swiper(`.mySwiper${productId}`, {
+                pagination: {
+                    el: ".swiper-pagination",
+                    clickable: true,
+                },
+                loop: true,
+                autoplay: {
+                    delay: 3000,
+                },
+            });
         });
     });
 </script>

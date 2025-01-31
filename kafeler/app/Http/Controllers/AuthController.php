@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Illuminate\Support\Str;
+
 
 class AuthController extends Controller
 {
@@ -23,6 +25,8 @@ class AuthController extends Controller
             'name' => $request->name,
             'surname' => $request->surname,
             'cafe_name' => $request->cafe_name,
+            'slug' => Str::slug($request->cafe_name), // Slug oluştur
+
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);

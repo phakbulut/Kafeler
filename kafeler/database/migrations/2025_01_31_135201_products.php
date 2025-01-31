@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->decimal('price', 8, 2);
+            $table->boolean('status')->default(false);
+
             $table->string('main_image'); 
             $table->text('description')->nullable(); 
             $table->timestamps();

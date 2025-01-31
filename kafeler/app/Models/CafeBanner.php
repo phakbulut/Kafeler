@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CafeBanner extends Model
 {
-    protected $fillable = ['user_id', 'image'];
+    protected $fillable = ['user_id', 'image','status'];
 
     public function user()
     {
