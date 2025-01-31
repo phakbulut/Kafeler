@@ -12,7 +12,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{route('dashboard.categories.index')}}">
                     <i class="bi bi-list-nested me-2"></i> Kategoriler
                 </a>
             </li>
@@ -22,7 +22,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{route('dashboard.settings')}}">
                     <i class="bi bi-gear me-2"></i> Ayarlar
                 </a>
             </li>

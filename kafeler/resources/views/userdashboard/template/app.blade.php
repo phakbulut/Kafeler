@@ -6,6 +6,7 @@
     <title>Kafe Yönetim Paneli</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <style>
         .sidebar {
             position: fixed;
@@ -50,6 +51,48 @@
     <!-- Footer -->
     @include('userdashboard.template.footer')
     @yield('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            @if(session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    text: '{{ session('success') }}',
+                    confirmButtonText: 'Tamam'
+                });
+            @endif
+    
+            @if(session('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Hata!',
+                    text: '{{ session('error') }}',
+                    confirmButtonText: 'Tamam'
+                });
+            @endif
+            @if(session('message'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Hata!',
+                    text: '{{ session('message') }}',
+                    confirmButtonText: 'Tamam'
+                });
+            @endif
+            @if($errors->any())
+                let errorMessages = {!! json_encode($errors->all()) !!};
+                let errorText = errorMessages.join("\n");
+    
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Hata!',
+                    text: errorText,
+                    confirmButtonText: 'Tamam'
+                });
+            @endif
+        });
+    </script>
+    
+
 </body>
 </html>

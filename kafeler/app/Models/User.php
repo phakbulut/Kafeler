@@ -21,7 +21,9 @@ class User extends Authenticatable
         'name',
         'surname',
         'email',
+        'avatar',
         'password',
+        'status',
         'cafe_name'
     ];
 
@@ -43,7 +45,6 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
     }

@@ -9,7 +9,8 @@
         <!-- Sağ Taraf -->
         <div class="d-flex align-items-center">
             <span class="me-3 text-muted">Hoş geldin, {{ Auth::user()->name }}</span>
-            <img src="https://via.placeholder.com/40" alt="Avatar" class="rounded-circle" width="40" height="40">
-        </div>
+            <img src="{{ Auth::user()->avatar ? asset('storage/avatars/' . Auth::user()->avatar) : asset('images/default-avatar.png') }}" 
+            alt="Avatar" class="rounded-circle" width="40" height="40">
+               </div>
     </div>
 </header>

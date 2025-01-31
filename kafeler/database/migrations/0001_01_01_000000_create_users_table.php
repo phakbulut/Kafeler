@@ -3,6 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Hash; 
+use App\Models\User;
 
 return new class extends Migration
 {
@@ -16,8 +18,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('surname');
             $table->string('cafe_name'); 
+            $table->string('avatar')->nullable(); 
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->boolean('status')->default(false);
             $table->string('password');
             $table->timestamps();
         });
@@ -36,6 +39,15 @@ return new class extends Migration
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
+        User::create([
+            'name' => 'Bayram',
+            'surname'=>'Akmeşe',
+            'cafe_name'=>'Eterna Kafe',
+            'avatar'=>'bayramakmese.webp',
+            'status'=>'0',
+            'email' => 'bayramakmese@cafeler.test', 
+            'password' => Hash::make('cafeler.2025'), 
+        ]);
     }
 
     /**

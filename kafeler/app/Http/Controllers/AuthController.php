@@ -43,7 +43,7 @@ class AuthController extends Controller
             return redirect('/dashboard')->with('success', 'Giriş başarılı!');
         }
 
-        return back()->withErrors(['email' => 'E-posta veya şifre yanlış.']);
+        return back()->withErrors(['error' => 'E-posta veya şifre yanlış.']);
     }
 
     // Çıkış işlemi
