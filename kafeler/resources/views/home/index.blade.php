@@ -9,21 +9,21 @@
         <div class="swiper init-swiper">
 
             <div class="swiper-wrapper">
-               
+
                     <div class="swiper-slide">
                         <div class="slide-object">
-                            <img class="slider-img" src="{{ asset('slider/ana_slide1.jpg') }}" alt="slider_1">
+                            <img class="slider-img" src="{{ asset('/slider/ana_slide1.jpg') }}" alt="slider_1">
                         </div>
-                        
+
                     </div>
                     <div class="swiper-slide">
                         <div class="slide-object">
-                            <img class="slider-img" src="{{ asset('slider/ana_slide2.jpg') }}" alt="slider_2">
+                            <img class="slider-img" src="{{ asset('/slider/ana_slide2.jpg') }}" alt="slider_2">
                         </div>
-                        
+
                     </div>
             </div>
-            
+
             <div class="swiper-pagination"></div>
         </div>
         <div class="swiper-button-prev"></div>
@@ -46,7 +46,7 @@
                         <div class="card-inner">
                             <div class="card-body p-0">
                                 <div class="card-object">
-                                    <div class="swiper swiper-progress swiper-container">
+                                    <div class="swiper productSwiper swiper-container">
                                     <div class="swiper-wrapper">
                                         @if ($cafe->cafebanners && $cafe->cafebanners->isNotEmpty())
                                             @foreach ($cafe->cafebanners as $banner)
@@ -79,28 +79,27 @@
         </div>
     </div>
 
-    
+
 </section>
 
 @endsection
 @section('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const cafeSwipers = document.querySelectorAll('.swiper-progress');
-        cafeSwipers.forEach(swiperElement => {
-            new Swiper(swiperElement, {
-                pagination: {
-                    el: ".swiper-pagination",
-                    clickable: true,
-                },
-                loop: true,
-                autoplay: {
-                    delay: 3000,
-                    disableOnInteraction: false,
-                },
-            });
+        const productSwipers = document.querySelectorAll('.init-swiper');
+    productSwipers.forEach(swiperElement => {
+        new Swiper(swiperElement, {
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            loop: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
         });
-
+    });
         const searchInput = document.getElementById('searchInput');
         const searchResults = document.getElementById('searchResults');
 
@@ -147,8 +146,8 @@
         "nextEl": ".swiper-button-next",
         "prevEl": ".swiper-button-prev"
     }
-    }	
-    
-    
+    }
+
+
 </script>
 @endsection

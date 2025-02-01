@@ -25,35 +25,37 @@
 
 </head>
 <body class="index-page">
-   
+
     <header id="header" class="header d-flex align-items-center fixed-top">
         <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
-    
+
             <div class="container center">
-           
+
                 <a href="{{route('home')}}">
                 <img src="{{ asset(env('APP_LOGO')) }}" alt="{{ env('APP_NAME') }}" class="img-fluid mx-auto d-block" style="max-width: 200px; height: 100px;">
             </a>
             </div>
-    
+
             <nav id="navmenu" class="navmenu">
                 <ul>
                     <li><a href="#">Kafeler</a></li>
-    
-                    
-    
+
+
+
                     <li><a href="{{route('contact')}}">İletişim</a></li>
-                    
+                    <li><a href="{{route('login')}}">Giriş Yap</a></li>
+                    <li><a href="{{route('register')}}">Kaydol</a></li>
+
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>
-    
+
         </div>
     </header>
     <main class="main">
-        
+
             @yield('content')
-      
+
     </main>
 
     <footer id="footer" class="footer light-background">
@@ -65,7 +67,7 @@
                         <a href="index.html" class="logo d-flex align-items-center">
                             <span class="sitename">Kafeler</span>
                         </a>
-                        <p>{{env('APP_META_DESCRIPTION')}}</p> 
+                        <p>{{env('APP_META_DESCRIPTION')}}</p>
                         <div class="social-links d-flex mt-4">
                             <a href=""><i class="bi bi-twitter-x"></i></a>
                             <a href=""><i class="bi bi-facebook"></i></a>
@@ -73,17 +75,17 @@
                             <a href=""><i class="bi bi-linkedin"></i></a>
                         </div>
                     </div>
-    
+
                     <div class="col-lg-3 col-md-10 footer-links text-center">
                        <br>
-                        <h4>Sizinde kafeniz burada gözüksün istemez misiniz</h4> 
+                        <h4>Sizinde kafeniz burada gözüksün istemez misiniz</h4>
 
                     </div>
-    
+
                     <div class="col-lg-2 col-6 footer-links">
-                       
+
                     </div>
-    
+
                     <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
                         <h4>Bizimle İletişime Geçin</h4>
                         <p>Musalla Bağları Mah Kule Cad</p>
@@ -92,11 +94,11 @@
                         <p class="mt-4"><strong>Telefon:</strong> <span>+90 533 533 33 33</span></p>
                         <p><strong>E-posta:</strong> <span>info@kafeler.test</span></p>
                     </div>
-    
+
                 </div>
             </div>
         </div>
-    
+
         <div class="container copyright text-center">
             <p>© <span>Telif Hakkı</span> <strong class="px-1 sitename">Kafeler®</strong> <span>Tüm Hakları
                     Saklıdır</span></p>
@@ -104,16 +106,16 @@
                Tasarım: <a href="https://greensky.com.tr/">İbrahim Akbulut</a>
             </div>
         </div>
-    
+
     </footer>
-    
+
     <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
         class="bi bi-arrow-up-short"></i></a>
-    
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
-    @stack('scripts')
+    @yield('scripts')
     <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('assets/vendor/php-email-form/validate.js') }}"></script>
 <script src="{{ asset('assets/vendor/aos/aos.js') }}"></script>

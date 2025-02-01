@@ -13,12 +13,12 @@
         border-radius: 8px;
         box-shadow: 0 2px 15px rgba(0,0,0,0.1);
     }
-    
+
     .swiper-wrapper {
         width: 100%;
         height: 100%;
     }
-    
+
     .swiper-slide {
         width: 100%;
         height: 100%;
@@ -27,7 +27,7 @@
         align-items: center;
         background: #f8f9fa;
     }
-    
+
     .swiper-slide img {
         max-width: 100%;
         max-height: 100%;
@@ -42,13 +42,13 @@
         width: 60px;
         height: 34px;
     }
-    
+
     .switch input {
         opacity: 0;
         width: 0;
         height: 0;
     }
-    
+
     .slider {
         position: absolute;
         cursor: pointer;
@@ -60,7 +60,7 @@
         transition: .4s;
         border-radius: 34px;
     }
-    
+
     .slider:before {
         position: absolute;
         content: "";
@@ -72,11 +72,11 @@
         transition: .4s;
         border-radius: 50%;
     }
-    
+
     input:checked + .slider {
         background-color: #28a745;
     }
-    
+
     input:checked + .slider:before {
         transform: translateX(26px);
     }
@@ -111,6 +111,18 @@
         background-color: #fff;
         border: 2px solid #dee2e6;
     }
+
+    /* Vuexy Uyumlu Tablo Başlık Stilleri */
+  
+
+    .table th, .table td {
+        padding: 12px;
+        text-align: center;
+    }
+
+    .table-bordered {
+        border: 1px solid #dee2e6;
+    }
 </style>
 @endsection
 
@@ -140,7 +152,7 @@
         <form id="bulkDeleteForm" method="POST" action="{{ route('dashboard.banners.bulkDelete') }}">
             @csrf
             <table class="table table-bordered table-hover align-middle">
-                <thead class="table-dark">
+                <thead>
                     <tr>
                         <th style="width: 50px;">
                             <div class="form-check">
@@ -158,35 +170,35 @@
                     <tr>
                         <td>
                             <div class="form-check">
-                                <input type="checkbox" 
-                                       name="ids[]" 
-                                       value="{{ $banner->id }}" 
+                                <input type="checkbox"
+                                       name="ids[]"
+                                       value="{{ $banner->id }}"
                                        class="form-check-input custom-checkbox">
                             </div>
                         </td>
                         <td>{{ $loop->iteration }}</td>
                         <td>
-                            <img src="{{ asset('storage/'.$banner->image) }}" 
-                                 alt="Banner {{ $loop->iteration }}" 
-                                 class="img-thumbnail" 
+                            <img src="{{ asset('storage/'.$banner->image) }}"
+                                 alt="Banner {{ $loop->iteration }}"
+                                 class="img-thumbnail"
                                  style="max-width: 150px; height: auto;">
                         </td>
                         <td>
                             <label class="switch">
-                                <input type="checkbox" 
-                                       data-id="{{ $banner->id }}" 
+                                <input type="checkbox"
+                                       data-id="{{ $banner->id }}"
                                        {{ $banner->status ? 'checked' : '' }}>
                                 <span class="slider round"></span>
                             </label>
                         </td>
                         <td>
-                            <a href="{{ route('dashboard.banners.edit', $banner->id) }}" 
-                               class="btn btn-warning btn-sm" 
+                            <a href="{{ route('dashboard.banners.edit', $banner->id) }}"
+                               class="btn btn-warning btn-sm"
                                title="Düzenle">
                                 <i class="bi bi-pencil"></i>
                             </a>
-                            <button type="button" 
-                                    class="btn btn-danger btn-sm delete-btn" 
+                            <button type="button"
+                                    class="btn btn-danger btn-sm delete-btn"
                                     data-id="{{ $banner->id }}"
                                     title="Sil">
                                 <i class="bi bi-trash"></i>
@@ -327,22 +339,17 @@
     // Toplu Silme İşlemi
     document.getElementById('bulkDeleteForm').addEventListener('submit', function(e) {
         e.preventDefault();
-        
-        const selectedIds = Array.from(document.querySelectorAll('input.custom-checkbox[name="ids[]"]:checked'))
-                                .map(checkbox => checkbox.value);
+        const selectedIds = Array.from(document.querySelectorAll('tbody input.custom-checkbox:checked'))
+                                  .map(checkbox => checkbox.value);
 
-        if(selectedIds.length === 0) {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Uyarı!',
-                text: 'Lütfen silmek istediğiniz bannerları seçiniz!'
-            });
+        if (selectedIds.length === 0) {
+            Swal.fire('Uyarı', 'Lütfen silmek için en az bir öğe seçin.', 'warning');
             return;
         }
 
         Swal.fire({
             title: 'Emin misiniz?',
-            text: `Seçilen ${selectedIds.length} banner kalıcı olarak silinecek!`,
+            text: "Seçilen öğeler silinecek!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -351,34 +358,7 @@
             cancelButtonText: 'İptal'
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch(this.action, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ ids: selectedIds })
-                })
-                .then(response => {
-                    if (!response.ok) throw new Error('Toplu silme işlemi başarısız');
-                    return response.json();
-                })
-                .then(data => {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Başarılı!',
-                        text: data.message,
-                        timer: 1500,
-                        showConfirmButton: false
-                    }).then(() => window.location.reload());
-                })
-                .catch(error => {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Hata!',
-                        text: error.message
-                    });
-                });
+                this.submit();
             }
         });
     });

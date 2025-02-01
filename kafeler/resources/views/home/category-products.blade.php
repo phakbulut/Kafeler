@@ -6,18 +6,19 @@
 @section('content')
 <section id="hero" class="hero section dark-background">
 
-    <img src="{{ asset('assets/img/hero-bg.jpg') }}" alt="" data-aos="fade-in">
+    <img src="{{ asset('assets/img/file-3224.jpg') }}" alt="" data-aos="fade-in">
 
     <div class="container">
         <div class="row">
             <div class="col-xl-4">
-                <h1 data-aos="fade-up">{{ $cafe->cafe_name }}</h1>
+                <h1 data-aos="fade-up">{{ $cafe->cafe_name }} </h1>
+                <h2 data-aos="fade-up"> {{$category->name}}</h2>
                 <blockquote data-aos="fade-up" data-aos-delay="100">
                     <p>{{ $cafe->description }}</p>
                 </blockquote>
                 <div class="d-flex" data-aos="fade-up" data-aos-delay="200">
                     <a href="{{ route('cafe.show', $cafe->slug) }}" class="btn-get-started">{{$cafe->cafe_name}} Kategorilerine Geri Dön</a>
-           
+
                 </div>
             </div>
         </div>
@@ -27,7 +28,7 @@
 <section id="products" class="products section">
     <div class="container">
         <div class="row">
-            
+
 
             <div class="col-lg-9">
                 <div class="row" data-aos="fade-up">
@@ -44,7 +45,7 @@
                                     </div>
                                     <div class="card-footer">
                                         <div class="product-title">{{ $product->name }}</div>
-                                        
+
                                             <button class=" card-btn" data-bs-toggle="modal" data-bs-target="#productModal{{ $product->id }}">
                                                 Detayları Gör
                                             </button>
@@ -73,7 +74,7 @@
                                             </div>
                                             <div class="swiper-pagination"></div>
                                         </div>
-            
+
                                         <div class="mt-3">
                                             <p><strong>Fiyat:</strong> {{ $product->price }} ₺</p>
                                             <p><strong>Açıklama:</strong> {{ $product->description }}</p>
@@ -93,7 +94,7 @@
         </div>
     </div>
 </section>
-  
+
 
 
 <script>

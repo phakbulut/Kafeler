@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html class="loading" lang="en" data-textdirection="ltr">
 
 <head>
     <meta charset="UTF-8">
@@ -8,92 +8,65 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <style>
-        .custom-checkbox {
-            width: 1.2em;
-            height: 1.2em;
-            margin-top: 0.25em;
-            vertical-align: top;
-            background-color: #fff;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: contain;
-            border: 2px solid #dee2e6;
-            border-radius: 0.35em;
-            appearance: none;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap">
+    <link rel="stylesheet" type="text/css" href="{{ asset('admin/app-assets/vendors/css/extensions/toastr.min.css') }}">
+    <link rel="stylesheet" type="text/css"
+        href="{{ asset('admin/app-assets/css/plugins/extensions/ext-component-toastr.css') }}">
+    <link rel="stylesheet" type="text/css"
+        href="{{ asset('admin/app-assets/css/plugins/extensions/ext-component-tree.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('admin/app-assets/vendors/css/extensions/jstree.min.css') }}">
 
-        .custom-checkbox:checked {
-            background-color: #0d6efd;
-            border-color: #0d6efd;
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
-        }
+    <!-- Vendor CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('admin/app-assets/vendors/css/vendors.min.css') }}">
+    <link rel="stylesheet" type="text/css"
+        href="{{ asset('admin/app-assets/fonts/font-awesome/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('admin/app-assets/vendors/css/extensions/toastr.min.css') }}">
+    <link rel="stylesheet" type="text/css"
+        href="{{ asset('admin/app-assets/vendors/css/file-uploaders/dropzone.min.css') }}">
+    <link rel="stylesheet" type="text/css"
+        href="{{ asset('admin/app-assets/vendors/css/tables/datatable/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" type="text/css"
+        href="{{ asset('admin/app-assets/vendors/css/tables/datatable/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet" type="text/css"
+        href="{{ asset('admin/app-assets/vendors/css/tables/datatable/buttons.bootstrap4.min.css') }}">
 
-        .custom-checkbox:hover:not(:checked) {
-            border-color: #86b7fe;
-            box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.25);
-        }
+    <!-- Theme CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('admin/app-assets/css/bootstrap.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('admin/app-assets/css/bootstrap-extended.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('admin/app-assets/css/colors.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('admin/app-assets/css/components.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('admin/app-assets/css/themes/dark-layout.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('admin/app-assets/css/themes/bordered-layout.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('admin/app-assets/css/themes/semi-dark-layout.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('admin/assets/css/style.css') }}">
 
-        .custom-checkbox:focus {
-            box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.25);
-            outline: 0;
-        }
-
-        .form-check {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 40px;
-        }
-
-        .sidebar {
-            position: fixed;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            z-index: 100;
-            padding: 48px 0 0;
-            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
-        }
-
-        .content {
-            margin-left: 200px;
-            padding: 20px;
-        }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                display: none;
-            }
-
-            .content {
-                margin-left: 0;
-            }
-        }
-    </style>
     @yield('styles')
 </head>
 
-<body>
+
+<body class="vertical-layout vertical-menu-modern navbar-floating footer-static" data-open="click"
+    data-menu="vertical-menu-modern" data-col="">
     <!-- Header -->
     @include('userdashboard.template.header')
 
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Sidebar -->
-            @include('userdashboard.template.sidebar')
+    @include('userdashboard.template.sidebar')
 
-            <!-- Content -->
-            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 content">
+    <div class="app-content content">
+        <div class="content-overlay"></div>
+        <div class="header-navbar-shadow"></div>
+        <div class="content-wrapper">
+            <div class="content-header row">
+                @yield('contentHeader')
+            </div>
+            <div class="content-body">
                 @yield('content')
-            </main>
+            </div>
         </div>
     </div>
-
     <!-- Footer -->
     @include('userdashboard.template.footer')
+
+
     @yield('scripts')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
@@ -139,7 +112,17 @@
         });
     </script>
 
+    <script src="{{ asset('admin/app-assets/vendors/js/vendors.min.js') }}"></script>
+    <script src="{{ asset('admin/app-assets/vendors/js/extensions/toastr.min.js') }}"></script>
 
+    <!-- Bootstrap ve jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    @yield('scripts')
+
+    <!-- Vuexy Core JS -->
+    <script src="{{ asset('admin/app-assets/js/core/app-menu.js') }}"></script>
+    <script src="{{ asset('admin/app-assets/js/core/app.js') }}"></script>
 </body>
 
 </html>

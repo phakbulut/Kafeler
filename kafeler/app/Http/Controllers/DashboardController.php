@@ -29,7 +29,7 @@ class DashboardController extends Controller
             return view('userdashboard.index', [
                 'error' => 'Lütfen kafe bilgilerinizi tamamlayın. Kafe adı ve slug tanımlı değil.',
                 'chartData' => json_encode([]), // Boş grafik verisi
-                'year' => $year, 
+                'year' => $year,
 
             ]);
         }
@@ -38,7 +38,7 @@ class DashboardController extends Controller
             ->where('year', $year)
             ->get()
             ->groupBy('slug');
-    
+
         $chartData = [];
         foreach ($cafes as $slug => $clicks) {
             $monthlyClicks = array_fill(1, 12, 0); // 12 ay için varsayılan değerler
@@ -51,9 +51,9 @@ class DashboardController extends Controller
             ];
         }
         $warning = empty($chartData) ? 'Henüz tıklama verisi bulunmuyor.' : null;
-    
+
         return view('userdashboard.index', [
-            'chartData' => json_encode($chartData), 
+            'chartData' => json_encode($chartData),
             'year' => $year,
             'warning' => $warning,
         ]);
@@ -84,22 +84,12 @@ class DashboardController extends Controller
                 'phone' => 'nullable|string',
             ]);
 
-            // Aktif kategori ve banner kontrolü
-            if ($request->has('status') && $request->input('status') == 1) {
-                $hasActiveCategories = $user->categories()->where('status', 1)->exists();
-                $hasActiveBanners = $user->cafebanners()->where('status', 1)->exists();
-
-                if (!$hasActiveCategories || !$hasActiveBanners) {
-
-                    return redirect()->route('dashboard.settings')->with('error', 'Aktif etmek için en az bir aktif kategori ve bir banner olmalıdır.');
-                }
-            }
+          
             $user->update([
                 'name' => $validated['name'],
                 'surname' => $validated['surname'],
                 'slug' => Str::slug($validated['cafe_name']),
                 'cafe_name' => $validated['cafe_name'],
-                'status' => $request->has('status') ? 1 : 0,
                 'location' => $validated['location'], // Google Maps iframe'i
             ]);
 

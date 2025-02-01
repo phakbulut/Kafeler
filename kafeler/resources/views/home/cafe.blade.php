@@ -6,12 +6,14 @@
 @section('content')
     <section id="hero" class="hero section dark-background">
 
-        <img src="{{ asset('assets/img/hero-bg.jpg') }}" alt="" data-aos="fade-in">
+        <img src="{{ asset('assets/img/file-3224.jpg') }}" alt="" data-aos="fade-in">
 
         <div class="container">
             <div class="row">
                 <div class="col-xl-4">
                     <h1 data-aos="fade-up">{{ $cafe->cafe_name }}</h1>
+                    <h4 data-aos="fade-up"> Kategoriler</h4>
+
                     <blockquote data-aos="fade-up" data-aos-delay="100">
                         <p>{{ $cafe->description }}</p>
                     </blockquote>
@@ -44,7 +46,7 @@
                                 <br>
 
                             @endif
-                    
+
                             @if ($cafe->socialLinks && $cafe->socialLinks->instagram)
                                 <a href="{{ $cafe->socialLinks->instagram }}" target="_blank">
                                     <i class="bi bi-instagram"></i>
@@ -59,7 +61,7 @@
                                 </span>
                                 <br>
                             @endif
-                    
+
                             @if ($cafe->socialLinks && $cafe->socialLinks->phone)
                                 <a href="tel:{{ $cafe->socialLinks->phone }}">
                                     <i class="bi bi-telephone"></i>

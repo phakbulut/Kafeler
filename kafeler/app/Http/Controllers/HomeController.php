@@ -14,6 +14,7 @@ class HomeController extends Controller
                 $query->where('status', 1);
             }])
             ->get();
+
         return view('home.index', compact('cafes'));
     }
 

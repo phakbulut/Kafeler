@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\Hash; 
+use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 
 return new class extends Migration
@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('surname');
-            $table->string('cafe_name'); 
-            $table->string('avatar')->nullable(); 
+            $table->string('cafe_name');
+            $table->string('avatar')->nullable();
             $table->string('email')->unique();
             $table->string('slug')->nullable();
             $table->text('location')->nullable();
@@ -42,13 +42,13 @@ return new class extends Migration
             $table->integer('last_activity')->index();
         });
         User::create([
-            'name' => 'Bayram',
-            'surname'=>'Akmeşe',
-            'cafe_name'=>'Eterna Kafe',
-            'avatar'=>'bayramakmese.webp',
+            'name' => 'İbrahim',
+            'surname'=>'Akbulut',
+            'cafe_name'=>'Akbulut Kafe',
+            'avatar'=>'default-avatar.png',
             'status'=>'0',
-            'email' => 'bayramakmese@cafeler.test', 
-            'password' => Hash::make('eterna.2025'), 
+            'email' => 'ibrahimakbulut@cafeler.test',
+            'password' => Hash::make('eterna.2025'),
         ]);
     }
 

@@ -4,7 +4,6 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Ürün Düzenle: {{ $product->name }}</h1>
 </div>
-
 <form method="POST" action="{{ route('dashboard.products.update', $product->id) }}" enctype="multipart/form-data">
     @csrf
     @method('PUT')
@@ -60,7 +59,7 @@
             @endforeach
         </div>
     </div>
-    
+
     <div class="mb-3">
         <label for="slider_images" class="form-label">Yeni Slider Resimleri Ekle (Opsiyonel)</label>
         <input type="file" class="form-control" id="slider_images" name="slider_images[]" multiple>
