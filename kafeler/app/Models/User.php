@@ -23,6 +23,7 @@ class User extends Authenticatable
         'email',
         'avatar',
         'password',
+        'location',
         'slug',
         'status',
         'cafe_name'
@@ -63,5 +64,12 @@ class User extends Authenticatable
     public function products()
     {
         return $this->hasMany(Product::class);
+    }
+    public function socialLinks()
+    {
+        return $this->hasOne(SocialLink::class);
+    }
+    public function CafeClicks(){
+        return $this->hasMany(CafeClick::class);
     }
 }

@@ -9,23 +9,15 @@
     <title>{{ env('APP_NAME') }} - @yield('title')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
-    <style>
-        .swiper-slide img {
-            width: 100%;
-            height: auto;
-        }
-        @media (max-width: 768px) {
-            .swiper-slide img {
-                height: 200px;
-                object-fit: cover;
-            }
-        }
-    </style>
+    @yield('styles')
 </head>
 <body>
     <header class="bg-light shadow-sm py-3">
-        <div class="container">
-            <h1 class="text-center">{{ env('APP_NAME') }}</h1>
+        <div class="container center">
+           
+           
+            <img src="{{ asset(env('APP_LOGO')) }}" alt="{{ env('APP_NAME') }}" class="img-fluid mx-auto d-block" style="max-width: 200px;">
+        
         </div>
     </header>
 

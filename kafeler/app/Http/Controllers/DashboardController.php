@@ -14,12 +14,40 @@ use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\CafeBanner;
 use Illuminate\Support\Str;
-
-
+use App\Models\SocialLink;
+use App\Models\CafeClick;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
-
+    public function dashboard()
+    {
+        $user = Auth::user();
+        $year = Carbon::now()->year;
+    
+        $cafes = $user->CafeClicks()
+            ->where('year', $year)
+            ->get()
+            ->groupBy('slug');
+    
+        $chartData = [];
+        foreach ($cafes as $slug => $clicks) {
+            $monthlyClicks = array_fill(1, 12, 0); // 12 ay için varsayılan değerler
+            foreach ($clicks as $click) {
+                $monthlyClicks[$click->month] = $click->click_count;
+            }
+    
+            $chartData[] = [
+                'name' => $slug,
+                'data' => array_values($monthlyClicks),
+            ];
+        }
+    
+        return view('userdashboard.index', [
+            'chartData' => json_encode($chartData),
+            'year' => $year,
+        ]);
+    }
     /*kullanıcı ayar sayfası */
     public function settings()
     {
@@ -29,25 +57,40 @@ class DashboardController extends Controller
 
     public function updateSettings(Request $request)
     {
-
         try {
             DB::beginTransaction();
-
             $user = Auth::user();
+
+
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
                 'surname' => 'required|string|max:255',
                 'cafe_name' => 'required|string|max:255',
                 'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
                 'password' => 'nullable|string|min:8|confirmed',
+                'location' => 'nullable|string',
+                'instagram' => 'nullable|string',
+                'facebook' => 'nullable|string',
+                'phone' => 'nullable|string',
             ]);
 
+            // Aktif kategori ve banner kontrolü
+            if ($request->has('status') && $request->input('status') == 1) {
+                $hasActiveCategories = $user->categories()->where('status', 1)->exists();
+                $hasActiveBanners = $user->cafebanners()->where('status', 1)->exists();
+
+                if (!$hasActiveCategories || !$hasActiveBanners) {
+
+                    return redirect()->route('dashboard.settings')->with('error', 'Aktif etmek için en az bir aktif kategori ve bir banner olmalıdır.');
+                }
+            }
             $user->update([
                 'name' => $validated['name'],
                 'surname' => $validated['surname'],
-                'slug' => Str::slug($validated['cafe_name']), 
+                'slug' => Str::slug($validated['cafe_name']),
                 'cafe_name' => $validated['cafe_name'],
                 'status' => $request->has('status') ? 1 : 0,
+                'location' => $validated['location'], // Google Maps iframe'i
             ]);
 
             if ($request->hasFile('avatar')) {
@@ -61,6 +104,14 @@ class DashboardController extends Controller
             if ($request->filled('password')) {
                 $user->update(['password' => Hash::make($validated['password'])]);
             }
+            SocialLink::updateOrCreate(
+                ['user_id' => $user->id], // Eşleşme koşulu
+                [
+                    'instagram' => $validated['instagram'],
+                    'facebook' => $validated['facebook'],
+                    'phone' => $validated['phone'],
+                ]
+            );
 
             DB::commit();
             return redirect()->route('dashboard.settings')->with('success', 'Ayarlar başarıyla güncellendi.');
@@ -75,6 +126,35 @@ class DashboardController extends Controller
     }
 
 
+    public function userToggleStatus(){
+      try {
+            $user = Auth::user();
+
+            $hasActiveCategories = $user->categories()->where('status', 1)->exists();
+            $hasActiveBanners = $user->cafebanners()->where('status', 1)->exists();
+
+            if (!$hasActiveCategories || !$hasActiveBanners) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Kafe sayfasını aktif etmek için en az bir aktif kategori ve bir banner olmalıdır.',
+                ], 400);
+            }
+
+            $user->update(['status' => !$user->status]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Kafe sayfası görünürlüğü başarıyla güncellendi.',
+                'status' => $user->status ? 'aktif' : 'pasif',
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Status değiştirme hatası: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Bir hata oluştu. Lütfen tekrar deneyin.',
+            ], 500);
+        }
+    }
 
     /* kategori sayfası */
     public function categoriesIndex()

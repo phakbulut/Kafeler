@@ -4,12 +4,23 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
-
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/cafe/{slug}', [HomeController::class, 'showCafe'])->name('cafe.show');
-Route::get('/search-cafes', [HomeController::class, 'searchCafes'])->name('search.cafes');
-Route::get('/cafe/{cafeSlug}/{categorySlug}', [HomeController::class, 'showCategoryProducts'])->name('cafe.category.products');
+Route::get('/cafe/{slug}', [HomeController::class, 'showCafe'])->name('cafe.show')->middleware('track.clicks');
+Route::get('/search-cafes', [HomeController::class, 'searchCafes'])->name('search.cafes'); //bu rotanın tıklamaları loglanıyor
+Route::get('/cafe/{cafeSlug}/{categorySlug}', action: [HomeController::class, 'showCategoryProducts'])->name('cafe.category.products');
+
+Route::get('/qr/{cafeSlug}/', function ($cafeSlug) {
+    $url = route('cafe.show', $cafeSlug);
+    $qrCode = new QrCode($url);
+    $writer = new PngWriter();
+    $result = $writer->write($qrCode);
+    return response($result->getString())
+        ->header('Content-Type', 'image/png')
+        ->header('Content-Disposition', 'attachment; filename="qrcode.png"');
+})->name('generate.qr');
 
 Route::get('/register', function () {
     return view('auth.register');
@@ -22,13 +33,13 @@ Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('userdashboard.index');
-    })->name('dashboard');
+    
 
+    Route::get('/dashboard', action: [DashboardController::class, 'dashboard'])->name('dashboard');
 
-    Route::get('/settings', [DashboardController::class, 'settings'])->name('dashboard.settings');
+    Route::get('/settings', action: [DashboardController::class, 'settings'])->name('dashboard.settings');
     Route::post('/settings', [DashboardController::class, 'updateSettings'])->name('dashboard.settings.update');
+    Route::post('/toggle-status', [DashboardController::class, 'userToggleStatus'])->name('dashboard.toggle.status');
 
     Route::get('/categories', [DashboardController::class, 'categoriesIndex'])->name('dashboard.categories.index');
     Route::get('/categories/create', [DashboardController::class, 'categoriesCreate'])->name('dashboard.categories.create');

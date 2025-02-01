@@ -34,7 +34,9 @@
 </style>
 @endsection
 @section('content')
-<div class="container">
+<a href="{{ route('cafe.show', $cafe->slug) }}" class="btn btn-secondary mb-3">
+    <i class="fas fa-arrow-left"></i> {{$cafe->cafe_name}} Kategorilerine Geri Dön
+</a>
     <div class="row mb-4">
         <div class="col-md-12">
             <h1>{{ $cafe->cafe_name }} - {{ $category->name }}</h1>
@@ -96,7 +98,7 @@
             </div>
         @endforeach
     </div>
-</div>
+
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {

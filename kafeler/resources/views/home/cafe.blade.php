@@ -40,4 +40,14 @@
         </div>
     @endforeach
 </div>
+@if ($cafe->location)
+<div class="row">
+
+    <div class="mt-4">
+        <h4>Konum</h4>
+        {!! $cafe->location !!} 
+    </div>
+</div>
+
+@endif
 @endsection
