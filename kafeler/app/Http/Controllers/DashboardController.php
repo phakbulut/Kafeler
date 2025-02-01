@@ -24,7 +24,16 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
         $year = Carbon::now()->year;
-    
+
+        if (empty($user->slug)) {
+            return view('userdashboard.index', [
+                'error' => 'Lütfen kafe bilgilerinizi tamamlayın. Kafe adı ve slug tanımlı değil.',
+                'chartData' => json_encode([]), // Boş grafik verisi
+                'year' => $year, 
+
+            ]);
+        }
+        $year = Carbon::now()->year;
         $cafes = $user->CafeClicks()
             ->where('year', $year)
             ->get()
@@ -36,16 +45,17 @@ class DashboardController extends Controller
             foreach ($clicks as $click) {
                 $monthlyClicks[$click->month] = $click->click_count;
             }
-    
             $chartData[] = [
                 'name' => $slug,
                 'data' => array_values($monthlyClicks),
             ];
         }
+        $warning = empty($chartData) ? 'Henüz tıklama verisi bulunmuyor.' : null;
     
         return view('userdashboard.index', [
-            'chartData' => json_encode($chartData),
+            'chartData' => json_encode($chartData), 
             'year' => $year,
+            'warning' => $warning,
         ]);
     }
     /*kullanıcı ayar sayfası */
@@ -126,8 +136,9 @@ class DashboardController extends Controller
     }
 
 
-    public function userToggleStatus(){
-      try {
+    public function userToggleStatus()
+    {
+        try {
             $user = Auth::user();
 
             $hasActiveCategories = $user->categories()->where('status', 1)->exists();

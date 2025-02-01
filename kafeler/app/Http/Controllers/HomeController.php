@@ -22,13 +22,14 @@ class HomeController extends Controller
         $cafe = User::where('status', 1)
             ->where('slug', $slug)
             ->with('categories')
+            ->with('socialLinks')
             ->with(['cafebanners' => function ($query) {
                 $query->where('status', 1);
             }])
             ->firstOrFail();
 
 
-       
+      //dd($cafe->toArray());
         return view('home.cafe', compact('cafe'));
     }
     public function searchCafes(Request $request)

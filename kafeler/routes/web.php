@@ -21,7 +21,9 @@ Route::get('/qr/{cafeSlug}/', function ($cafeSlug) {
         ->header('Content-Type', 'image/png')
         ->header('Content-Disposition', 'attachment; filename="qrcode.png"');
 })->name('generate.qr');
-
+Route::get('/contact', function () {
+    return view('home.contact');
+})->name('contact');
 Route::get('/register', function () {
     return view('auth.register');
 })->name('register');
